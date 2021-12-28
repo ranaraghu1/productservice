@@ -1,0 +1,34 @@
+Actuator-Health check
+
+In appliaction.properties file
+-------------------------------
+management.endpoint.health.show-details=always
+management.endpoints.web.exposure.include=*
+
+In pom.xml file-add build-info in maven plugin
+------------------
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-actuator</artifactId>
+		</dependency>
+
+Some endpoints
+---------------
+http://localhost:8080/productapi/actuator
+http://localhost:8080/productapi/actuator/health
+http://localhost:8080/productapi/actuator/env
+http://localhost:8080/productapi/actuator/info
+http://localhost:8080/productapi/actuator/metrics
+http://localhost:8080/productapi/actuator/beans
