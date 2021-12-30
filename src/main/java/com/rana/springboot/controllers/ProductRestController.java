@@ -2,6 +2,10 @@ package com.rana.springboot.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,8 @@ import com.rana.springboot.repos.ProductRepository;
 
 @RestController
 public class ProductRestController {
+	private static final Logger LOGGER=LoggerFactory.getLogger(ProductRestController.class);
+	
 	@Autowired
 	ProductRepository repository;
 
@@ -29,15 +35,15 @@ public class ProductRestController {
 
 	@GetMapping(value = "/products/{id}")
 	public Product getProductById(@PathVariable("id") int id) {
-
+		 LOGGER.info("Finding product by ID:"+id);
 		return repository.findById(id).get();
 
 	}
 
 	@PostMapping(value = "/products/")
-	public Product createProduct(@RequestBody Product product) {
+	public Product createProduct(@Valid @RequestBody Product product) {
 
-		return repository.save(product);
+	return repository.save(product);
 
 	}
 
