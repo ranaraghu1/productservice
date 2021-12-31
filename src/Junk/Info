@@ -1,59 +1,8 @@
-Actuator-Health check
+Actuator-Health check-CustomHealthIndicator
+Swagger API
+Validation
+Logging-slf4j
+MockMvc-Integration testing
+profiles
+JpaRepository
 
-In appliaction.properties file
--------------------------------
-management.endpoint.health.show-details=always
-management.endpoints.web.exposure.include=*
-
-In pom.xml file-add build-info in maven plugin
-------------------
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>build-info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-actuator</artifactId>
-		</dependency>
-
-Some endpoints
----------------
-http://localhost:8080/productapi/actuator
-http://localhost:8080/productapi/actuator/health
-http://localhost:8080/productapi/actuator/env
-http://localhost:8080/productapi/actuator/info
-http://localhost:8080/productapi/actuator/metrics
-http://localhost:8080/productapi/actuator/beans
-
-springfox-swagger version 3.0.0 and spring boot starter version 2.6.0 issues
-
-resolved
-
-http://localhost:8080/productapi/swagger-ui.html
-http://localhost:8080/productapi/v2/api-docs
-
-springfox-swagger version 2.9.2 and spring boot starter version 2.6.0
-
-
-for swagger configuration
-
-pom.xml
-
-springfox-swagger2
-springfox-swagger-ui
-
-@SpringBootApplication
-@EnableSwagger2
-public class HellospringbootApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(HellospringbootApplication.class, args);
-	}
