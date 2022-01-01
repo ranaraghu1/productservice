@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import com.rana.springboot.entites.Product;
 import com.rana.springboot.repos.ProductRepository;
@@ -31,6 +32,9 @@ public class ProductRestControllerTest {
 @Value("${Product.service-url}")
 private String baseUrl;
 
+@Value("${service-url}")
+private String serviceUrl;
+
 	@Test
 	public void testFindAll() throws Exception {
 		Product product =new Product();
@@ -41,6 +45,17 @@ private String baseUrl;
 		List<Product> products=Arrays.asList(product);
        when(repository.findAll()).thenReturn(products);
        mockMvc.perform(get(baseUrl).contextPath("/productapi")).andExpect(status().isOk());
+       
+     
+		
+	}
+	
+	@Test
+	public void testGetProduct() {
+		RestTemplate restTemplate=new RestTemplate();
+		Product newProduct=restTemplate.getForObject(serviceUrl+"1",Product.class);
+		assertNotNull(newProduct);
+		
        
      
 		

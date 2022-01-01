@@ -5,4 +5,5 @@ Logging-slf4j
 MockMvc-Integration testing
 profiles
 JpaRepository
+Caching-Hazelcast
 
