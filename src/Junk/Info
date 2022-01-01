@@ -6,4 +6,5 @@ MockMvc-Integration testing
 profiles
 JpaRepository
 Caching-Hazelcast
-
+FinderMethod
+JPQL

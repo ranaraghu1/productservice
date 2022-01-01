@@ -55,10 +55,20 @@ private String serviceUrl;
 		RestTemplate restTemplate=new RestTemplate();
 		Product newProduct=restTemplate.getForObject(serviceUrl+"1",Product.class);
 		assertNotNull(newProduct);
-		
-       
-     
-		
+	
+	}
+	
+	//finder-Method
+	@Test
+	public void testFindByName() {
+		List<Product> products=repository.findByName("Nokia");
+		products.forEach(p->System.out.println(p.getPrice()));
+	}
+	
+	@Test
+	public void testFindByPriceGreaterThan() {
+		List<Product> products=repository.findByPriceGreaterThan(1000d);
+		products.forEach(p->System.out.println(p.getPrice()));
 	}
 
 }
