@@ -43,5 +43,14 @@ public class StudentJPQLTest {
 		students.forEach(student->System.out.println(student.getFirstName()));
 		
 	}
+	
+	
+	@Test
+	public void findByFirstname() {
+		
+		List<Student> students=studentRepo.findByFirstname("Raghu");
+		students.forEach(student->System.out.println(student.getScore()));
+		
+	}
 
 }
