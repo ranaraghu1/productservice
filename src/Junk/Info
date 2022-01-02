@@ -12,3 +12,5 @@ Complex JPQL Query ?  --> go for Native SQL Query
 (Also support for DDL operation which JPQL does not-Creation of table/Dropping of table)
 
 one-many mapping
+filtering-(don't want to send some field as response)- in FilteringController
+versioning

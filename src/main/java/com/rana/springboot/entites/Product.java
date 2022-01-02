@@ -10,7 +10,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+//@JsonIgnoreProperties(value= {"id","price"}) - Filtering
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,6 +26,7 @@ public class Product implements Serializable {
 	@Size(max=100)
 	private String description;
 	@Min(value=1,message="The minimun value must be 1")
+	//@JsonIgnore - This field ,we don't want to send json response back-Some sensitive data should be filtering
 	private int price;
 
 	public int getId() {
