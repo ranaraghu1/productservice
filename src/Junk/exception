@@ -1,0 +1,17 @@
+Generic Exception Handling- Standard structure design for Exception handling
+ in a whole organization 
+ 
+ Centralized Exception Handling-ResponseEntityExceptionHandler
+ 
+ in CustomizeResponseEntityExceptionHandler class
+ 
+@ControllerAdvice  -- the exception should apply across all controller
+@RestController--- We need exception response ,so @RestController
+public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) throws Exception {
+		
+			ExceptionResponse  exceptionResponse=new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+		return new ResponseEntity(exceptionResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
