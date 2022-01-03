@@ -1,3 +1,26 @@
 Versioning
 
 For same API- 2 different version/2 different version of same service.
+
+types
+----------------------------------------------------------------------
+URI mapping
+-----------
+to test this--  http://localhost:8080/productapi/v1/person
+                http://localhost:8080/productapi/v2/person
+
+Request Param
+-------------
+to test this-- http://localhost:8080/productapi/person/param?version=1/2
+
+Header versioning
+-----------------
+to test this -- http://localhost:8080/productapi/person/header
+pass header key X-API-VERSION and value=1/2
+
+produces/MIME type or Accept versioning.
+-----------------------------------------
+to test this--- http://localhost:8080/productapi/person/produces
+
+to send json data
+key=Accept and value= application/vnd.company.add-v2+json or application/vnd.company.add-v1+json
