@@ -16,3 +16,5 @@ filtering-(don't want to send some field as response)- in FilteringController
 versioning
 
 Exception Handling
+
+Centralized Configuration- Config server
