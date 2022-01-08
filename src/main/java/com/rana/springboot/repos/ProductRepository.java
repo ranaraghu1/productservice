@@ -13,6 +13,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
 	
 	List<Product> findByPriceGreaterThan(Double string);
 	
+	List<Product> findAll();
+	
 	
 
 	

@@ -1,0 +1,67 @@
+in SpringCloudConfigServer project
+
+in application.properties add
+-----------------------------
+spring.application.name=config-server
+server.port=8888
+ 
+for local git repository
+#spring.cloud.config.server.git.uri=file:///f:/config-properties
+
+for remote Git
+spring.cloud.config.server.git.uri=https://github.com/ranaraghu1/restapi
+
+
+In spring cloud latest version,2020 and later version add below dependency
+
+<dependency>
+    		<groupId>org.springframework.cloud</groupId>
+    		<artifactId>spring-cloud-starter-bootstrap</artifactId>
+</dependency>
+
+in SpringBoot application class/main class-- add  @EnableConfigServer
+-------------------------------------------------------------
+@EnableConfigServer
+@SpringBootApplication
+public class SpringCloudConfigServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringCloudConfigServerApplication.class, args);
+	}
+
+}
+
+
+to test this-  http://localhost:8888/product-service/dev/
+
+               http://localhost:8888/product-service/default/
+               
+               
+ create file below file in git repository
+ product-service.properties ,     product-service-dev.properties
+               
+               
+ Create a client App to get default and dev configuration
+ --------------------------------------------------------
+ Add following properties in pom.xml file
+ 
+      <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		
+ in application.properties file rename to bootstarp.properties
+ 
+ add add following properties
+ 
+spring.application.name=product-service
+spring.cloud.config.uri=http://localhost:8888
+
+if want to activate Dev or QA profile add spring.profiles.active=dev
+ 
+ 
+ 
+               
+               
+               
+               

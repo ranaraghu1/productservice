@@ -1,0 +1,16 @@
+
+@WebMvcTest
+public class ProductRestControllerTest {
+
+    @Autowired
+	private MockMvc mockMvc;
+	@MockBean
+	private ProductRepository repository;
+	
+	@Value("${Product.service-url}")
+    private String baseUrl;
+    
+	@Test
+	public void testFindAll(){
+	when(repository.findAll()).thenReturn(products);
+     mockMvc.perform(get(baseUrl).contextPath("/productapi")).andExpect(status().isOk());
