@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.rana.springboot</groupId>
-	<artifactId>ProductRestApi</artifactId>
+	<artifactId>productservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ProductRestApi</name>
+	<name>productservice</name>
 	<description>Spring Boot Rest Service</description>
 	<properties>
 		<java.version>1.8</java.version>
