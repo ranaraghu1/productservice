@@ -1,0 +1,7 @@
+
+private static final Logger LOGGER=LoggerFactory.getLogger(ProductRestController.class);
+
+in application.properties
+
+logging.file=logs/application.log
+logging.level.root=info

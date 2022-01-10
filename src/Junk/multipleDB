@@ -1,0 +1,44 @@
+in application.properties- add customize properties
+
+spring.datasource-product.url=jdbc:mysql://localhost:3306/test
+spring.datasource-product.username=root
+spring.datasource-product.password=root
+
+create configuration classes marked @Configuration and define @EnableJpaRepositories
+
+and in @EnableJpaRepositories-- add entityManagerFactoryRef,transactionManagerRef and basePackages.
+
+crate datasource using datasource properties--@ConfigurationProperties("spring.datasource-product")
+
+----------------------------------------------------------------------------------------------------------------
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(entityManagerFactoryRef = "productEntityManagerFactory",transactionManagerRef = "productTransactionManager",basePackages = {"com.rana.springboot.*"})
+public class ProductDataSourceConfiguration {
+	@Primary
+	@Bean(name="productDatasourceproperties")
+	@ConfigurationProperties("spring.datasource-product")
+	public DataSourceProperties productDatasourceproperties() {
+		return new DataSourceProperties();
+	
+	}
+	
+	@Primary
+	@Bean(name="productDataSource")
+	public DataSource productDataSource() {
+		return productDatasourceproperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+	}
+	
+	@Primary
+	@Bean(name="productEntityManagerFactory")
+	public LocalContainerEntityManagerFactoryBean productEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+		
+		//return builder.dataSource(productDataSource()).packages(Product.class).persistenceUnit("productDataSource").build();
+		return builder.dataSource(productDataSource()).packages("com.rana.springboot.*").build();
+	}
+	
+	@Primary
+	@Bean(name="productTransactionManager")
+	public PlatformTransactionManager productTransactionManager(@Qualifier("productEntityManagerFactory") EntityManagerFactory productEntityManagerFactory) {
+		return new JpaTransactionManager(productEntityManagerFactory);
+	}

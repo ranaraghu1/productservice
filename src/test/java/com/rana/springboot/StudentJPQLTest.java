@@ -7,7 +7,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.querydsl.QPageRequest;
+
+import org.springframework.data.domain.Sort.Direction;
+
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rana.springboot.entites.Student;
@@ -40,9 +42,14 @@ public class StudentJPQLTest {
 	@Test
 	public void testFindAllStudent() {
 
-		@SuppressWarnings("deprecation")
-		List<Student> students = studentRepo.findAllStudents(new QPageRequest(0, 2));
+     //0=page 1,1=page2
+		//List<Student> students = studentRepo.findAllStudents(PageRequest.of(0, 2));
+		
+		List<Student> students = studentRepo.findAllStudents(PageRequest.of(0, 4,Direction.DESC,"score"));
+		
 		students.forEach(student -> System.out.println(student.getFirstName()));
+	
+			        
 
 	}
 

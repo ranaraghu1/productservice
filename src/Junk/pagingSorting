@@ -1,0 +1,12 @@
+in  Repository class add Pageable interface in method arguments
+List<Student> findAllStudents(Pageable pageable);
+
+and implementation method add PageRequest
+
+for paging- 0(1st page),1(2nd page)...so on
+
+List<Student> students = studentRepo.findAllStudents(PageRequest.of(0, 2));
+
+for paging and sorting
+		
+List<Student> students = studentRepo.findAllStudents(PageRequest.of(0, 4,Direction.DESC,"score"));

@@ -1,0 +1,20 @@
+create messages_fn.properties,messages_en.properties files
+
+in properties file add key like good.morning .message="............."
+
+in controller class 
+
+@Autowired
+MessageSource messageSource;
+
+@GetMapping (value = "/internationalization/")
+	public String helloInterationalization(/* @RequestHeader(name="Accept-Language",required=false) Locale locale */) {
+
+		return messageSource.getMessage("good.morning.message", null, "default message",LocaleContextHolder.getLocale());
+
+	}
+	
+	
+	
+to test this---http://localhost:8080/productapi/internationalization/
+send key=Accept-Language and value=en or fr...so on.

@@ -1,0 +1,57 @@
+Third party cache provider.
+
+Hazelcast
+Ehcahe
+JboshhCache
+
+in pom.xml
+
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-spring</artifactId>
+		</dependency>
+		
+		
+		
+@Configuration
+public class ProductCacheConfig {
+	
+	public Config cacheConfig() {
+		return new Config().setInstanceName("hazelcast-instance")
+				.addMapConfig(new MapConfig().setName("product-cache").setTimeToLiveSeconds(3000));
+	}
+	}	
+		
+@EnableCaching
+public class HellospringbootApplication {
+
+}
+	
+	@GetMapping(value = "/products/{id}")
+	@Transactional(readOnly=true)
+	@Cacheable("product-cache")
+	public Product getProductById(@PathVariable("id") int id) {
+	---------
+	-----------
+	}
+	
+	@DeleteMapping(value = "/products/{id}")
+	@CacheEvict("product-cache")
+	public void delete(@PathVariable("id") int id) {
+
+		-------------
+
+	}
+		
+		
+	

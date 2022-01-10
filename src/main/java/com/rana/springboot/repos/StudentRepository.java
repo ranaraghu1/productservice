@@ -12,7 +12,11 @@ import com.rana.springboot.entites.Student;
 public interface StudentRepository extends CrudRepository<Student, Long> {
 	//JPQL
 	@Query("from Student")
-    List<Student> findAllStudents(Pageable pageable);
+
+
+    List<Student> findAllStudents(Pageable pageable
+    		);
+
 	
 	@Query("from Student st where st.firstName=:firstName")
 	List<Student> findAllStudentsByFirstname(@Param("firstName") String firstName);
