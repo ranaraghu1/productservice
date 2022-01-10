@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rana.springboot.entites.Student;
@@ -38,7 +40,8 @@ public class StudentJPQLTest {
 	@Test
 	public void testFindAllStudent() {
 
-		List<Student> students = studentRepo.findAllStudents();
+		@SuppressWarnings("deprecation")
+		List<Student> students = studentRepo.findAllStudents(new QPageRequest(0, 2));
 		students.forEach(student -> System.out.println(student.getFirstName()));
 
 	}
