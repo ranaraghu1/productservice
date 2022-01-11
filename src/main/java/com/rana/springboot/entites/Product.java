@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,6 +29,8 @@ public class Product implements Serializable {
 	@Min(value=1,message="The minimun value must be 1")
 	//@JsonIgnore - This field ,we don't want to send json response back-Some sensitive data should be filtering
 	private int price;
+	@Transient //@Transient- not saved to DB
+	private String couponCode;
 
 	public int getId() {
 		return id;
@@ -59,5 +62,13 @@ public class Product implements Serializable {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public String getCouponCode() {
+		return couponCode;
+	}
+
+	public void setCouponCode(String couponCode) {
+		this.couponCode = couponCode;
 	}
 }

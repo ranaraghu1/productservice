@@ -1,0 +1,4 @@
+API Gateway- to apply cross cutting concerns
+cross cutting concerns- common non functionalities across all microservice.
+
+Product service can't directly invoke the coupon service.-All the request is routed though API gateway

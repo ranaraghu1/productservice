@@ -1,0 +1,114 @@
+create a Eureka server
+---------------------------
+@SpringBootApplication
+@EnableEurekaServer
+public class EurekaServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(EurekaServerApplication.class, args);
+	}
+
+}
+
+in pom.xml add 
+
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+</dependency>
+
+
+in application.properties 
+
+server.port=8761
+eureka.client.register-with-eureka=false  (don't register yourself as you are server)
+eureka.client.fetch-registry=false
+
+
+Productservice----->coupon service
+
+In both application add --@EnableEurekaClient
+
+@SpringBootApplication
+@EnableEurekaClient
+public class CouponserviceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CouponserviceApplication.class, args);
+	}
+
+}
+
+in application.properties of both application add
+
+spring.application.name=coupon-service or product-service
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+
+to test--  http://localhost:8761/
+
+run eureka server then run coupon and product service.Both service instance should be registered with eureka server.
+
+
+Feign client-Its rest client.Easy to create a rest client using feign client.Its balancing the load as well.
+
+In productservice
+-----------------
+Add feign client
+
+@EnableFeignClients
+public class HellospringbootApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(HellospringbootApplication.class, args);
+	}
+
+}
+
+in pom.xml add
+
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+</dependency>
+
+and create a interface
+
+@FeignClient("COUPON-SERVICE")
+public interface CouponClient {
+	@GetMapping("/couponapi/coupons/{code}")
+	Coupon getCoupon(@PathVariable("code") String code);
+
+}
+
+in controller class- create method add ---Coupon coupon=couponClient.getCoupon(product.getCouponCode());
+
+@PostMapping(value = "/products/")
+	public Product createProduct(@Valid @RequestBody Product product) {
+		Coupon coupon=couponClient.getCoupon(product.getCouponCode());
+		int price=product.getPrice() - ((coupon.getDiscount()).intValue()*product.getPrice())/100;
+		product.setPrice(price);
+		
+		return repository.save(product);
+
+	}
+	
+	
+	to test this-- http://localhost:9090/productapi/products/
+	
+	and pass json data
+	{
+    "name": "Nokia 12",
+    "description": "Awesome",
+    "price": 2000,
+    "couponCode": "SUPERSALE"
+     }
+     
+     
+    to add load balancing --add following dependency in productservice's pom.xml file 
+	
+       <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-loadbalancer</artifactId>
+		</dependency>
+
+

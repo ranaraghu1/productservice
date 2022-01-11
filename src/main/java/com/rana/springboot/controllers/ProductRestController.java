@@ -3,7 +3,6 @@ package com.rana.springboot.controllers;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +22,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rana.springboot.entites.Product;
 import com.rana.springboot.exception.UserNotFoundException;
+import com.rana.springboot.model.Coupon;
 import com.rana.springboot.repos.ProductRepository;
+import com.rana.springboot.restclients.CouponClient;
 
 @RestController
 public class ProductRestController {
@@ -39,6 +38,9 @@ public class ProductRestController {
 	MessageSource messageSource;
 	@Autowired
 	ProductRepository repository;
+	
+	@Autowired
+	CouponClient couponClient;
 
 	@GetMapping(value = "/products/")
 	public List<Product> getProducts() {
@@ -80,8 +82,11 @@ public class ProductRestController {
 	
 	@PostMapping(value = "/products/")
 	public Product createProduct(@Valid @RequestBody Product product) {
-
-	return repository.save(product);
+		Coupon coupon=couponClient.getCoupon(product.getCouponCode());
+		int price=product.getPrice() - ((coupon.getDiscount()).intValue()*product.getPrice())/100;
+		product.setPrice(price);
+		
+		return repository.save(product);
 
 	}
 
@@ -101,8 +106,7 @@ public class ProductRestController {
 	}
 
 	@PatchMapping(value = "/products/")
-	public Product partialUpdate(@RequestBody Product product) {
-
+	public Product partialUpdate(@RequestBody Product product) {	
 		return repository.save(product);
 
 	}
