@@ -1,0 +1,27 @@
+Feign client- Client side load balancing
+Ribbon-we can also client side load balancing with ribbon
+
+add in productservice pom.xml file
+
+       <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+		</dependency>
+		
+		and add in restful client
+		
+	
+		
+//@FeignClient("COUPON-SERVICE")	
+@FeignClient("GATEWAY-SERVICE")
+@RibbonClient("COUPON-SERVICE")
+public interface CouponClient {
+	@GetMapping("/couponapi/coupons/{code}")
+	Coupon getCoupon(@PathVariable("code") String code);
+
+}
+		
+Both Feign and Ribbon work together with eureka to client side load balancing
+now Run multiple instance of coupon service and send request from client(productservice).
+
+Ribbon connecting to eureka automatically and get the server where the coupon service is running and it distributes the load.

@@ -1,0 +1,21 @@
+sleuth-responsible for adding the trace id and span id to http headers.
+Zipkin- aggregating those traces and display on dash board.
+
+Add these dependencies in all project- api gateway,productservice and coupon service
+
+       <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
+		</dependency>
+		
+		
+	Now All service are registered with Eureka server-product sercice,coupon service and api gateway	
+		
+now install zipkin server in machine which runs at port 9411		
+to test-  http://localhost:9411/zipkin/  (Zipkin Dash board).
+

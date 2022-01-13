@@ -8,8 +8,21 @@ import com.rana.springboot.model.Coupon;
 
 //@FeignClient("COUPON-SERVICE")
 @FeignClient("GATEWAY-SERVICE")
+//@RibbonClients("COUPON-SERVICE")
+//@FeignClient("zuul-api-gateway")
 public interface CouponClient {
-	@GetMapping("/couponapi/coupons/{code}")
-	Coupon getCoupon(@PathVariable("code") String code);
+	
+	//This is for @FeignClient("COUPON-SERVICE"),@FeignClient("GATEWAY-SERVICE"),@RibbonClients("COUPON-SERVICE")
+	
+	  @GetMapping("/couponapi/coupons/{code}") 
+	  Coupon getCoupon(@PathVariable("code") String code);
+	 
+	
+	//This is for @FeignClient("zuul-api-gateway")
+	
+	/*
+	 * @GetMapping("/coupon-service/couponapi/coupons/{code}") Coupon
+	 * getCoupon(@PathVariable("code") String code);
+	 */
 
 }

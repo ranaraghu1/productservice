@@ -31,6 +31,8 @@ import com.rana.springboot.model.Coupon;
 import com.rana.springboot.repos.ProductRepository;
 import com.rana.springboot.restclients.CouponClient;
 
+import io.github.resilience4j.retry.annotation.Retry;
+
 @RestController
 public class ProductRestController {
 	private static final Logger LOGGER=LoggerFactory.getLogger(ProductRestController.class);
@@ -81,6 +83,7 @@ public class ProductRestController {
 	}
 	
 	@PostMapping(value = "/products/")
+	@Retry(name="product-api",fallbackMethod="handleError")
 	public Product createProduct(@Valid @RequestBody Product product) {
 		Coupon coupon=couponClient.getCoupon(product.getCouponCode());
 		int price=product.getPrice() - ((coupon.getDiscount()).intValue()*product.getPrice())/100;
@@ -88,6 +91,11 @@ public class ProductRestController {
 		
 		return repository.save(product);
 
+	}
+	
+	public Product handleError(Product product,Exception e) {
+		System.out.println("Inside the error"+e);
+		return product;
 	}
 
 	@PutMapping(value = "/products/")

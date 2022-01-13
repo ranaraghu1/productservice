@@ -2,3 +2,86 @@ API Gateway- to apply cross cutting concerns
 cross cutting concerns- common non functionalities across all microservice.
 
 Product service can't directly invoke the coupon service.-All the request is routed though API gateway
+
+create a api gatewayservice project
+
+in pom.xml
+--------------------------------------
+       <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		
+		
+in application.properties-- add routes
+-------------------------------------
+server.port=9095
+
+#apigateway will register with eureka server
+spring.application.name=gateway-service
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+
+
+spring.cloud.gateway.routes[0].id=couponModule
+#for load balancing
+spring.cloud.gateway.routes[0].uri=lb://COUPON-SERVICE
+spring.cloud.gateway.routes[0].predicates[0]=Path=/couponapi/**
+
+
+spring.cloud.gateway.routes[1].id=productModule
+#for load balancing
+spring.cloud.gateway.routes[1].uri=lb://PRODUCT-SERVICE
+spring.cloud.gateway.routes[1].predicates[0]=Path=/productapi/**	
+
+---------------------------------------------------------
+@SpringBootApplication
+@EnableEurekaClient
+public class ApigatewayserviceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ApigatewayserviceApplication.class, args);
+	}
+
+}	
+
+in productservice application change @FeignClient("GATEWAY-SERVICE")
+--------------------------------------------------------------------
+//@FeignClient("COUPON-SERVICE")
+@FeignClient("GATEWAY-SERVICE")
+public interface CouponClient {
+	@GetMapping("/couponapi/coupons/{code}")
+	Coupon getCoupon(@PathVariable("code") String code);
+
+}
+
+
+And add filter for api gatewayservice so that each request routed through filter
+--------------------------------------------------------------------------------
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+@Component
+public class MyFilter implements GlobalFilter {
+
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		System.out.println("pre pocessing logic goes here"+exchange.getRequest());
+		return chain.filter(exchange).then(Mono.fromRunnable(()->{
+			System.out.println("post processing logic goes here"+exchange.getResponse());
+		}));
+	}
+
+}
+
+
+to test this-  http://localhost:9095/productapi/products/
+
+port 9095=api gateway port, now send request to product service though api gateway
+
+
+Zuul API Proxy gatewa
+------------------------
+Internally eureka zuul proxy uses Ribbon to do server side load balancing.

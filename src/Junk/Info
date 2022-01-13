@@ -23,4 +23,7 @@ Multiple DB configuration
 
 Euereka server
 Feign client and load balancing
+API Gateway-Filter
+Fault Toleranace- resilience4j
+sleuth and Zipkin
 
